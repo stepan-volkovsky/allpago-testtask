@@ -20,6 +20,10 @@ public class Scenario {
         }
     }
 
+    public Package aPackage(){
+        return aPackage;
+    }
+
     @Override
     public String toString() {
         return "Ship to " + target + " " + aPackage + " for " + cost;

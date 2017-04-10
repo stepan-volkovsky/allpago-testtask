@@ -23,6 +23,7 @@ public class Main {
             System.out.println("Scenarios: ");
             for (Scenario scenario : csv.scenarios()) {
                 System.out.println(scenario);
+                System.out.println(scenario.aPackage().normalizedWeight());
             }
         }
     }
@@ -33,7 +34,7 @@ public class Main {
             throw new IllegalArgumentException("Invalid base path: " + basePath);
         }
         final List<CSVFile> result = new LinkedList<>();
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(base, "glob: *.csv")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(base, "*.csv")) {
             stream.forEach(new Consumer<Path>() {
                 @Override
                 public void accept(Path path) {
