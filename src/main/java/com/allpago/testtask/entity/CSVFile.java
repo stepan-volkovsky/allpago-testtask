@@ -1,3 +1,5 @@
+package com.allpago.testtask.entity;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,39 +18,18 @@ public class CSVFile {
         this.filePath = path;
     }
 
-    private String name() {
-        return filePath.getFileName().toString();
-    }
-
-    public void trace() throws IOException {
-        if (scenarios.isEmpty() || graph == null) {
+    public Graph graph() throws IOException {
+        if (graph == null) {
             readFile();
         }
-        System.out.println("\n" + name());
-        if (graph != null) {
-//            printGraph();
-            graph.traceEstimates();
-//            printGraph();
-            for (Scenario scenario : scenarios) {
-                scenario.calculateCost(graph);
-            }
-            printScenarios();
-        }
-
+        return graph;
     }
 
-    private void printGraph() {
-        if (graph != null) {
-            graph.print();
+    public List<Scenario> scenarios() throws IOException {
+        if (scenarios.isEmpty()) {
+            readFile();
         }
-    }
-
-    private void printScenarios() {
-        System.out.println("\nScenarios: ");
-        for (Scenario scenario : scenarios) {
-            System.out.print(scenario);
-            System.out.println();
-        }
+        return scenarios;
     }
 
     private void readFile() throws IOException {

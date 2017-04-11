@@ -1,3 +1,5 @@
+package com.allpago.testtask.entity;
+
 import java.util.*;
 
 /**

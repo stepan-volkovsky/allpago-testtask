@@ -1,3 +1,5 @@
+package com.allpago.testtask.entity;
+
 /**
  * Created by svolkovskyi on 10.04.17.
  */

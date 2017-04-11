@@ -1,3 +1,7 @@
+package com.allpago.testtask;
+
+import com.allpago.testtask.entity.CSVFile;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -16,7 +20,7 @@ public class Main {
         Main main = new Main();
         List<CSVFile> csvFiles = main.findCSV("/home/KIEV/svolkovskyi/Documents/allpago_interview_test");
         for (CSVFile csv : csvFiles) {
-            csv.trace();
+            new Application(csv).run();
         }
     }
 

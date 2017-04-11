@@ -1,3 +1,6 @@
+package com.allpago.testtask.entity;
+
+import java.lang.*;
 import java.text.DecimalFormat;
 
 /**
