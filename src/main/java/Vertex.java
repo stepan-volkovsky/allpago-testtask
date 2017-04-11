@@ -8,7 +8,7 @@ public class Vertex {
     private final Map<String, Integer> destinations;
 
     private String predecessor;
-    private double shortestPathEstimate = Double.POSITIVE_INFINITY;
+    private double hardEstimate = Double.POSITIVE_INFINITY;
 
     public Vertex(String name) {
         this.name = name;
@@ -21,7 +21,7 @@ public class Vertex {
         }
         this.name = csvLine[0];
         if ("ME".equals(name)) {
-            shortestPathEstimate = 0;
+            hardEstimate = 0;
         }
         Map<String, Integer> destinations = new HashMap<>();
         for (int i = 1; i < csvLine.length; i++) {
@@ -41,17 +41,19 @@ public class Vertex {
         return destinations.get(name);
     }
 
-    public double pathEstimate(){
-        return shortestPathEstimate;
+    public double hardEstimate(){
+        return hardEstimate;
     }
 
-    public List<String> siblings() {
+    public List<String> destinations() {
         return new LinkedList<>(destinations.keySet());
     }
 
     public void relax(String predecessor, double predecessorsEstimate, double edgeWeight) {
-        if (shortestPathEstimate > edgeWeight + predecessorsEstimate) {
-            shortestPathEstimate = edgeWeight + predecessorsEstimate;
+        Vertex v = null;
+
+        if (hardEstimate > edgeWeight + predecessorsEstimate) {
+            hardEstimate = edgeWeight + predecessorsEstimate;
             this.predecessor = predecessor;
         }
     }
@@ -60,7 +62,7 @@ public class Vertex {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder(name);
-        builder.append(" predecessor: ").append(predecessor).append(", estimatedPath: ").append(shortestPathEstimate);
+        builder.append(" predecessor: ").append(predecessor).append(", estimatedPath: ").append(hardEstimate);
         for (Map.Entry<String, Integer> destination : destinations.entrySet()) {
             builder.append(" -> ").append(destination.getKey()).append(" : ").append(destination.getValue()).append("HARD");
         }

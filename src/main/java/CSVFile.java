@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,10 +11,6 @@ public class CSVFile {
     private final Path filePath;
     private Graph graph;
     private final List<Scenario> scenarios = new LinkedList<>();
-
-    public CSVFile(String path) {
-        this.filePath = Paths.get(path);
-    }
 
     public CSVFile(Path path) {
         this.filePath = path;
@@ -32,7 +27,7 @@ public class CSVFile {
         System.out.println("\n" + name());
         if (graph != null) {
 //            printGraph();
-            graph.performBellmanFord();
+            graph.traceEstimates();
 //            printGraph();
             for (Scenario scenario : scenarios) {
                 scenario.calculateCost(graph);
@@ -40,15 +35,6 @@ public class CSVFile {
             printScenarios();
         }
 
-    }
-
-    public void print() throws IOException {
-        if (scenarios.isEmpty() || graph == null) {
-            readFile();
-        }
-        System.out.println("\n" + name());
-        printGraph();
-        printScenarios();
     }
 
     private void printGraph() {

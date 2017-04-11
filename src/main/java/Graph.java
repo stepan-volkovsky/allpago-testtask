@@ -13,27 +13,27 @@ public class Graph {
         for (String[] parts : lines) {
             Vertex vertex = new Vertex(parts);
             this.adjacencyList.put(vertex.name(), vertex);
-            for (String sibling : vertex.siblings()) {
-                adjacencyList.put(sibling, new Vertex(sibling));
+            for (String destination : vertex.destinations()) {
+                adjacencyList.put(destination, new Vertex(destination));
             }
         }
     }
 
-    public void performBellmanFord() {
+    public void traceEstimates() {
         for (int i = 0; i < adjacencyList.size(); i++) {
             for(Map.Entry<String, Vertex> entry : adjacencyList.entrySet()){
-                Vertex u = entry.getValue();
-                for(String sibling : u.siblings()){
-                    Vertex v = adjacencyList.get(sibling);
-                    int pathWeight = u.hard(sibling);
-                    v.relax(u.name(), u.pathEstimate(), pathWeight);
+                Vertex current = entry.getValue();
+                for(String destination : current.destinations()){
+                    Vertex v = adjacencyList.get(destination);
+                    int pathWeight = current.hard(destination);
+                    v.relax(current.name(), current.hardEstimate(), pathWeight);
                 }
             }
         }
     }
 
-    public double hard(String name){
-        return adjacencyList.get(name).pathEstimate();
+    public double hardEstimate(String name){
+        return adjacencyList.get(name).hardEstimate();
     }
 
     public void print(){

@@ -24,13 +24,12 @@ public class Scenario {
     }
 
     public void calculateCost(Graph graph) {
-        calculatedCost = Math.sqrt(graph.hard(target)) * aPackage.normalizedWeight();
+        calculatedCost = Math.sqrt(graph.hardEstimate(target)) * aPackage.normalizedWeight();
     }
 
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.00");
-
-        return "Ship to " + target + " " + aPackage + " for " + cost + "; normalized weight: " + aPackage.normalizedWeight() + "; calculated cost: " + df.format(calculatedCost);
+        return "Ship to " + target + " " + aPackage + " for " + cost + "; calculated cost: " + df.format(calculatedCost);
     }
 }
