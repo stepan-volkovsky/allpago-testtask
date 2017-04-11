@@ -16,15 +16,7 @@ public class Main {
         Main main = new Main();
         List<CSVFile> csvFiles = main.findCSV("/home/KIEV/svolkovskyi/Documents/allpago_interview_test");
         for (CSVFile csv : csvFiles) {
-            System.out.println("Nodes: ");
-            for (Node node : csv.nodes()) {
-                System.out.println(node);
-            }
-            System.out.println("Scenarios: ");
-            for (Scenario scenario : csv.scenarios()) {
-                System.out.println(scenario);
-                System.out.println(scenario.aPackage().normalizedWeight());
-            }
+            csv.trace();
         }
     }
 

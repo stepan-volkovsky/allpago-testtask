@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 /**
  * Created by svolkovskyi on 10.04.17.
  */
@@ -5,6 +7,7 @@ public class Scenario {
     private final String target;
     private final Package aPackage;
     private final double cost;
+    private double calculatedCost;
 
     public Scenario(String[] csvLine) {
         if (csvLine == null || csvLine.length != 4) {
@@ -20,12 +23,14 @@ public class Scenario {
         }
     }
 
-    public Package aPackage(){
-        return aPackage;
+    public void calculateCost(Graph graph) {
+        calculatedCost = Math.sqrt(graph.hard(target)) * aPackage.normalizedWeight();
     }
 
     @Override
     public String toString() {
-        return "Ship to " + target + " " + aPackage + " for " + cost;
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        return "Ship to " + target + " " + aPackage + " for " + cost + "; normalized weight: " + aPackage.normalizedWeight() + "; calculated cost: " + df.format(calculatedCost);
     }
 }

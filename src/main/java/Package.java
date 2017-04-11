@@ -28,11 +28,17 @@ public class Package {
      * @return package weight in kg rounded up to the nearest 0,5kg
      */
     public double normalizedWeight() {
-        RoundedDouble volumetricWeight = new RoundedDouble((width * length * height) / 5000d);
-        RoundedDouble realWeight = new RoundedDouble(weight / 1000d);
-        return (volumetricWeight.compareTo(realWeight) > 0 ? volumetricWeight : realWeight).value();
+        double volumetricWeight = volumetricWeight();
+        double realWeight = weight / 1000d;
+        return volumetricWeight > realWeight ? volumetricWeight : realWeight;
     }
 
+    private double volumetricWeight(){
+        double notRounded = (width * length * height) / 5000d;
+        int integer = (int) notRounded;
+        double fraction = notRounded - integer;
+        return  ((fraction > 0.5d ? 1d : fraction == 0d ? 0d : 0.5d) + integer);
+    }
 
 
     @Override

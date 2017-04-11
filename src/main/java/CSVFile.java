@@ -9,42 +9,74 @@ import java.util.List;
  * Created by svolkovskyi on 10.04.17.
  */
 public class CSVFile {
-    private final Path path;
-    private final List<Node> nodes = new LinkedList<>();
+    private final Path filePath;
+    private Graph graph;
     private final List<Scenario> scenarios = new LinkedList<>();
 
     public CSVFile(String path) {
-        this.path = Paths.get(path);
+        this.filePath = Paths.get(path);
     }
 
-    public CSVFile(Path path) {this.path = path;}
+    public CSVFile(Path path) {
+        this.filePath = path;
+    }
 
-    public List<Node> nodes() throws IOException {
-        if (this.nodes.isEmpty()) {
-            readCSV();
+    private String name() {
+        return filePath.getFileName().toString();
+    }
+
+    public void trace() throws IOException {
+        if (scenarios.isEmpty() || graph == null) {
+            readFile();
         }
-        return new LinkedList<>(nodes);
-    }
-
-    public List<Scenario> scenarios() throws IOException {
-        if (this.scenarios.isEmpty()) {
-            readCSV();
+        System.out.println("\n" + name());
+        if (graph != null) {
+//            printGraph();
+            graph.performBellmanFord();
+//            printGraph();
+            for (Scenario scenario : scenarios) {
+                scenario.calculateCost(graph);
+            }
+            printScenarios();
         }
-        return new LinkedList<>(scenarios);
+
     }
 
-    private void readCSV() throws IOException {
-        List<String> lines = Files.readAllLines(path);
+    public void print() throws IOException {
+        if (scenarios.isEmpty() || graph == null) {
+            readFile();
+        }
+        System.out.println("\n" + name());
+        printGraph();
+        printScenarios();
+    }
 
+    private void printGraph() {
+        if (graph != null) {
+            graph.print();
+        }
+    }
+
+    private void printScenarios() {
+        System.out.println("\nScenarios: ");
+        for (Scenario scenario : scenarios) {
+            System.out.print(scenario);
+            System.out.println();
+        }
+    }
+
+    private void readFile() throws IOException {
+        List<String> lines = Files.readAllLines(filePath);
+        List<String[]> graphLines = new LinkedList<>();
         for (String line : lines) {
             String[] parts = line.split(",");
             if ("@".equals(parts[0])) {
                 this.scenarios.add(new Scenario(parts));
             } else {
-                this.nodes.add(new Node(parts));
+                graphLines.add(parts);
             }
-
         }
+        graph = new Graph(graphLines);
     }
 }
 
