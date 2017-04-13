@@ -18,6 +18,10 @@ public class CSVFile {
         this.filePath = path;
     }
 
+    public String name(){
+        return filePath.getFileName().toString();
+    }
+
     public Graph graph() throws IOException {
         if (graph == null) {
             readFile();

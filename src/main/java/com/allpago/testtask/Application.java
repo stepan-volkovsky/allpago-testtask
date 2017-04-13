@@ -17,13 +17,20 @@ public class Application {
         this.csvFile = csvFile;
     }
 
-    public void run() throws IOException {
-        Graph graph = csvFile.graph();
-        graph.traceEstimates();
-        List<Scenario> scenarios = csvFile.scenarios();
-        for (Scenario scenario : scenarios) {
-            scenario.calculateCost(graph);
-            System.out.println(scenario);
+    public void run() {
+        try {
+            Graph graph = csvFile.graph();
+            List<Scenario> scenarios = csvFile.scenarios();
+
+            graph.traceEstimates();
+            System.out.println("\n" + csvFile.name() + ":");
+            for (Scenario scenario : scenarios) {
+                scenario.calculateCost(graph);
+                System.out.println(scenario);
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to read a file");
+            e.printStackTrace();
         }
     }
 }

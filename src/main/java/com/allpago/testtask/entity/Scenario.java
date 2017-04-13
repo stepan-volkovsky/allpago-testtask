@@ -1,7 +1,7 @@
 package com.allpago.testtask.entity;
 
-import java.lang.*;
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Created by svolkovskyi on 10.04.17.
@@ -27,12 +27,25 @@ public class Scenario {
     }
 
     public void calculateCost(Graph graph) {
-        calculatedCost = Math.sqrt(graph.hardEstimate(target)) * aPackage.normalizedWeight();
+        Double doubleCost = Math.sqrt(graph.hardEstimate(target)) * aPackage.normalizedWeight();
+        if (doubleCost.isInfinite() || doubleCost.isNaN()) {
+            this.calculatedCost = Double.POSITIVE_INFINITY;
+        } else {
+            BigDecimal calculatedCost = new BigDecimal(doubleCost);
+            this.calculatedCost = calculatedCost.setScale(2, RoundingMode.HALF_UP).doubleValue();
+        }
+    }
+
+    public double cost(){
+        return this.cost;
+    }
+
+    public double calculatedCost(){
+        return this.calculatedCost;
     }
 
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat("#.00");
-        return "Ship to " + target + " " + aPackage + " for " + cost + "; calculated cost: " + df.format(calculatedCost);
+        return "Ship to " + target + " " + aPackage + " for " + cost + "; calculated cost: " + calculatedCost;
     }
 }
